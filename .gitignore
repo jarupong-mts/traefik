@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+
+acme.json
+certs/
+secrets/
+*.key
+*.crt
+*.cer
+*.pem
+*.p12
+*.pfx
+
+*.log
+docker-compose.override.yml
