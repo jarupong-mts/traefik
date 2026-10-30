@@ -15,7 +15,10 @@ services:
       # Traefik is the public listener allowed by IT.
       - 18080:80
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # This host runs rootless Docker; the daemon socket lives under
+      # /run/user/<uid>, not /var/run/docker.sock (which belongs to a
+      # separate rootful dockerd this container's user can't access).
+      - /run/user/1011/docker.sock:/var/run/docker.sock:ro
     networks:
       - proxy
 
