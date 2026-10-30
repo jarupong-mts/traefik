@@ -15,10 +15,20 @@ configuration is required for this gateway.
 ## Start
 
 ```bash
-docker compose up -d
-docker compose ps
-docker compose logs -f traefik
+make start      # or: docker compose up -d
+make ps
+make logs
 ```
+
+The first `make up` (same as `make start`) asks for the public port (Enter
+keeps `18080`, the port IT approved) and writes a local `.env` with
+`TRAEFIK_HTTP_PORT`, `XDG_RUNTIME_DIR`, and `DOCKER_SOCKET`. `.env` is
+gitignored. `.env.example` shows the same keys. To set them by hand, copy it:
+`cp .env.example .env`, then edit the uid in the paths. Run `make setup` to
+change the values later; it overwrites `.env`.
+
+`make stop` stops the container without removing the `proxy` network, so other
+projects stay attached. Run `make help` for all targets.
 
 The Compose file creates the external-to-other-projects network `proxy`.
 
