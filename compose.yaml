@@ -12,13 +12,13 @@ services:
       - --log.level=INFO
       - --accesslog=true
     ports:
-      # Traefik is the public listener allowed by IT.
-      - 18080:80
+      # Traefik is the public listener allowed by IT (18080 by default).
+      - "${TRAEFIK_HTTP_PORT:-18080}:80"
     volumes:
-      # This host runs rootless Docker; the daemon socket lives under
-      # /run/user/<uid>, not /var/run/docker.sock (which belongs to a
-      # separate rootful dockerd this container's user can't access).
-      - /run/user/1011/docker.sock:/var/run/docker.sock:ro
+      # Rootless Docker serves its socket from $XDG_RUNTIME_DIR (/run/user/<uid>),
+      # not /var/run/docker.sock (which belongs to a separate rootful dockerd this
+      # container's user can't access). Falls back to uid 1011 when unset.
+      - "${DOCKER_SOCKET:-${XDG_RUNTIME_DIR:-/run/user/1011}/docker.sock}:/var/run/docker.sock:ro"
     networks:
       - proxy
 
